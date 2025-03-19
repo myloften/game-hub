@@ -17,4 +17,10 @@ pages_build_output_dir = ".next"
 bucket = ".next"
 
 [build.upload]
-format = "service-worker" 
+format = "service-worker"
+exclude = [
+  "**/*.map",
+  "**/cache/**",
+  "**/server/**",
+  "**/static/chunks/pages/**"
+] 
