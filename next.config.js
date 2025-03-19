@@ -43,6 +43,11 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
+  experimental: {
+    serverActions: {
+      allowedOrigins: ['localhost:3000', '*.pages.dev'],
+    },
+  },
   async headers() {
     return [
       {
