@@ -7,7 +7,8 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: '**',
+        hostname: 'cdn.cloudflare.steamstatic.com',
+        pathname: '/steam/apps/**',
       },
     ],
   },
@@ -49,92 +50,56 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@radix-ui/react-avatar', '@radix-ui/react-label', '@radix-ui/react-slot', '@radix-ui/react-tabs'],
   },
-  webpack: (config, { isServer }) => {
-    if (!isServer) {
-      // 禁用 webpack 缓存
+  webpack: (config, { dev, isServer }) => {
+    // 生产环境优化
+    if (!dev && !isServer) {
+      // 禁用缓存
       config.cache = false;
       
-      // 优化分包策略
+      // 优化 chunk 大小
       config.optimization = {
         ...config.optimization,
         splitChunks: {
           chunks: 'all',
-          maxInitialRequests: 25,
+          maxSize: 5000000, // 5MB
           minSize: 20000,
-          maxSize: 5000000, // 降低到 5MB
+          maxAsyncRequests: 30,
+          maxInitialRequests: 30,
           cacheGroups: {
-            default: false,
-            vendors: false,
-            framework: {
-              name: 'framework',
-              chunks: 'all',
-              test: /[\\/]node_modules[\\/](react|react-dom|next)[\\/]/,
-              priority: 40,
-              enforce: true,
-            },
-            lib: {
+            defaultVendors: {
               test: /[\\/]node_modules[\\/]/,
-              name(module) {
-                const match = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/);
-                if (!match) return 'lib';
-                const packageName = match[1];
-                return `lib.${packageName.replace('@', '')}`;
-              },
-              priority: 30,
-              minChunks: 1,
+              priority: -10,
               reuseExistingChunk: true,
             },
-            commons: {
-              name: 'commons',
+            default: {
               minChunks: 2,
-              priority: 20,
+              priority: -20,
+              reuseExistingChunk: true,
             },
           },
         },
-        runtimeChunk: {
-          name: 'runtime',
-        },
-        minimize: true,
-        minimizer: [
-          ...config.optimization.minimizer || [],
-          new TerserPlugin({
-            terserOptions: {
-              compress: {
-                drop_console: true,
-                drop_debugger: true,
-                pure_funcs: ['console.log', 'console.info', 'console.debug', 'console.warn'],
-              },
-              mangle: true,
-              output: {
-                comments: false,
-              },
-            },
-          }),
-        ],
       };
 
       // 禁用 source maps
       config.devtool = false;
-      
+      config.optimization.minimize = true;
+
       // 优化模块解析
       config.resolve = {
         ...config.resolve,
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         alias: {
           ...config.resolve.alias,
-          'react': 'react/dist/react.production.min.js',
-          'react-dom': 'react-dom/dist/react-dom.production.min.js',
+          '@': '.',
         },
       };
 
-      // 禁用一些不必要的功能
+      // 禁用不必要的功能
       config.performance = {
         hints: false,
       };
-      config.stats = {
-        children: false,
-      };
     }
+
     return config;
   },
 }

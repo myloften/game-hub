@@ -11,6 +11,10 @@ d1_databases = [
 [site]
 bucket = ".output"
 
+[build]
+command = "npm install && npx prisma generate && NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production npm run build"
+pages_build_output_dir = ".output"
+
 [build.upload]
 format = "service-worker"
 exclude = [
