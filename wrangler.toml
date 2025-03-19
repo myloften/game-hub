@@ -5,8 +5,13 @@ pages_build_output_dir = ".next"
 [env.production]
 DATABASE_URL = "file:./d1.db"
 NODE_ENV = "production"
+d1_databases = [
+  { binding = "DB", database_name = "game-hub-db", database_id = "4e1c3a0f-b314-4b27-8b8e-d1a08e6f63c2" }
+]
 
-[[env.production.d1_databases]]
-binding = "DB"
-database_name = "game-hub-db"
-database_id = "4f423a8e-1a30-42d5-ae6a-1d051d3b22e9" 
+[build]
+command = "npm install && npx prisma generate && NEXT_TELEMETRY_DISABLED=1 npm run build"
+pages_build_output_dir = ".next"
+
+[site]
+bucket = ".next" 

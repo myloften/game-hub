@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "node scripts/clean-build.mjs pre && next build && node scripts/clean-build.mjs post",
+    "build": "rm -rf .next && NEXT_TELEMETRY_DISABLED=1 next build && rm -rf .next/cache",
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx prisma/seed.ts",
