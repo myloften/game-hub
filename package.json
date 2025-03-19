@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && rm -rf .output && NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production npm install --legacy-peer-deps && npm install -D tailwindcss postcss autoprefixer && npx prisma generate && next build && rm -rf .next && find .output -type f -name '*.pack' -delete && find .output -type f -name '*.map' -delete && rm -rf .output/cache",
+    "build": "rm -rf .next && rm -rf .output && NEXT_TELEMETRY_DISABLED=1 NODE_ENV=production npm install --legacy-peer-deps && npm install -D tailwindcss@latest postcss@latest autoprefixer@latest && npx prisma generate && next build && rm -rf .next && find .output -type f -name '*.pack' -delete && find .output -type f -name '*.map' -delete && rm -rf .output/cache",
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx prisma/seed.ts",
