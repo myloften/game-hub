@@ -43,9 +43,6 @@ const nextConfig = {
   typescript: {
     ignoreBuildErrors: true,
   },
-  experimental: {
-    serverActions: true,
-  },
   async headers() {
     return [
       {
