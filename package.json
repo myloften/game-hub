@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf .next && NEXT_TELEMETRY_DISABLED=1 next build && rm -rf .next/cache",
+    "build": "rm -rf .next && rm -rf node_modules/.cache && NEXT_TELEMETRY_DISABLED=1 next build && rm -rf .next/cache && rm -rf .next/cache/webpack",
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx prisma/seed.ts",
