@@ -1,6 +1,6 @@
 name = "game-hub"
 compatibility_date = "2024-03-19"
-pages_build_output_dir = ".output"
+pages_build_output_dir = ".next"
 
 [env.production]
 DATABASE_URL = "file:./d1.db"
