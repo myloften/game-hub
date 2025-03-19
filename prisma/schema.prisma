@@ -10,7 +10,7 @@ generator client {
 
 datasource db {
   provider = "sqlite"
-  url      = env("DATABASE_URL")
+  url      = "prisma://accelerate.prisma-data.net/?api_key=${env:DATABASE_URL}"
   directUrl = env("DIRECT_URL")
 }
 
