@@ -1,0 +1,9 @@
+name = "game-hub"
+compatibility_date = "2024-03-19"
+pages_build_output_dir = ".next"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "game-hub-db"
+database_id = "4f423a8e-1a30-42d5-ae6a-1d051d3b22e9"
+migrations_dir = "prisma/migrations" 

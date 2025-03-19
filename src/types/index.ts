@@ -1,10 +1,29 @@
+import { Prisma } from '@prisma/client';
+
+export type GameWithRatings = Prisma.GameGetPayload<{
+  include: { ratings: true }
+}> & {
+  averageRating: number;
+};
+
 export interface Rating {
-  id: string;
   value: number;
-  userId: string;
-  gameId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  user: {
+    id: string;
+    name: string | null;
+    email: string | null;
+    image: string | null;
+  };
+}
+
+export interface Comment {
+  id: string;
+  content: string;
+  createdAt: string;
+  user: {
+    id: string;
+    name: string | null;
+  };
 }
 
 export interface Game {

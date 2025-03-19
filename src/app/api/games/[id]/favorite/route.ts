@@ -1,25 +1,50 @@
-import { NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '@/lib/auth';
+import { prisma } from '@/lib/prisma';
 
 export async function POST(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
     }
 
-    const { userId } = await request.json();
+    // Check if game exists
+    const game = await prisma.game.findUnique({
+      where: { id: params.id },
+    });
 
-    if (userId !== session.user.id) {
-      return new NextResponse('Forbidden', { status: 403 });
+    if (!game) {
+      return NextResponse.json(
+        { error: 'Game not found' },
+        { status: 404 }
+      );
     }
 
+    // Check if already favorited
+    const existingFavorite = await prisma.favorite.findFirst({
+      where: {
+        userId: session.user.id,
+        gameId: params.id,
+      },
+    });
+
+    if (existingFavorite) {
+      return NextResponse.json(
+        { error: 'Game already in favorites' },
+        { status: 400 }
+      );
+    }
+
+    // Add to favorites
     const favorite = await prisma.favorite.create({
       data: {
         userId: session.user.id,
@@ -29,40 +54,56 @@ export async function POST(
 
     return NextResponse.json(favorite);
   } catch (error) {
-    console.error('[FAVORITE_POST]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.error('Error adding favorite:', error);
+    return NextResponse.json(
+      { error: 'Failed to add favorite' },
+      { status: 500 }
+    );
   }
 }
 
 export async function DELETE(
-  request: Request,
+  request: NextRequest,
   { params }: { params: { id: string } }
 ) {
   try {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return NextResponse.json(
+        { error: 'Authentication required' },
+        { status: 401 }
+      );
     }
 
-    const { userId } = await request.json();
-
-    if (userId !== session.user.id) {
-      return new NextResponse('Forbidden', { status: 403 });
-    }
-
-    await prisma.favorite.delete({
+    // Find the favorite to delete
+    const favorite = await prisma.favorite.findFirst({
       where: {
-        userId_gameId: {
-          userId: session.user.id,
-          gameId: params.id,
-        },
+        userId: session.user.id,
+        gameId: params.id,
       },
     });
 
-    return new NextResponse(null, { status: 204 });
+    if (!favorite) {
+      return NextResponse.json(
+        { error: 'Favorite not found' },
+        { status: 404 }
+      );
+    }
+
+    // Delete the favorite
+    await prisma.favorite.delete({
+      where: {
+        id: favorite.id
+      },
+    });
+
+    return NextResponse.json({ success: true });
   } catch (error) {
-    console.error('[FAVORITE_DELETE]', error);
-    return new NextResponse('Internal Error', { status: 500 });
+    console.error('Error removing favorite:', error);
+    return NextResponse.json(
+      { error: 'Failed to remove favorite' },
+      { status: 500 }
+    );
   }
 } 

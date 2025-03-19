@@ -1,15 +1,7 @@
 import { prisma } from '@/lib/prisma';
-import { Prisma } from '@prisma/client';
+import { GameWithRatings } from '@/types';
 
-type GameWithRatings = Prisma.GameGetPayload<{
-  include: { ratings: true }
-}>;
-
-export interface GameWithRating extends GameWithRatings {
-  averageRating: number;
-}
-
-export async function getGames(): Promise<GameWithRating[]> {
+export async function getGames(): Promise<GameWithRatings[]> {
   try {
     const games = await prisma.game.findMany({
       include: {

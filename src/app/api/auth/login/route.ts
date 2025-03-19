@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
     const user = await prisma.user.findUnique({ where: { email } });
     console.log('Find user result:', user ? 'User exists' : 'User not found');
 
-    if (!user) {
+    if (!user || !user.password) {
       return NextResponse.json(
         { error: 'User not found' },
         { status: 404 }

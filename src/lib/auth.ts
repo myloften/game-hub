@@ -2,6 +2,8 @@ import { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { prisma } from './prisma';
+import { getServerSession } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 // 扩展 NextAuth 的类型定义
 declare module "next-auth" {
@@ -91,4 +93,14 @@ export const authOptions: NextAuthOptions = {
     }
   },
   secret: process.env.NEXTAUTH_SECRET,
-}; 
+};
+
+export async function verifyAuth() {
+  const session = await getServerSession(authOptions);
+
+  if (!session) {
+    redirect('/login');
+  }
+
+  return session;
+} 

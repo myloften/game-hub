@@ -1,0 +1,20 @@
+[build]
+command = "npm run build"
+cwd = "."
+
+[build.upload]
+format = "service-worker"
+
+[site]
+bucket = ".next"
+include = ["public/*"]
+
+[env.production]
+name = "game-hub"
+route = "gamehub.it.com/*"
+workers_dev = true
+
+[[d1_databases]]
+binding = "DB"
+database_name = "game-hub-db"
+database_id = "4f423a8e-1a30-42d5-ae6a-1d051d3b22e9" 

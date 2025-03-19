@@ -23,6 +23,7 @@ interface Comment {
   content: string;
   createdAt: string;
   user: {
+    id: string;
     name: string | null;
     email: string | null;
     image: string | null;
@@ -63,6 +64,7 @@ async function getGame(id: string): Promise<Game> {
         include: {
           user: {
             select: {
+              id: true,
               name: true,
               email: true,
               image: true,
@@ -86,14 +88,23 @@ async function getGame(id: string): Promise<Game> {
   return {
     ...game,
     comments: game.comments.map(comment => ({
-      ...comment,
+      id: comment.id,
+      content: comment.content,
       createdAt: comment.createdAt.toISOString(),
+      user: {
+        id: comment.user.id,
+        name: comment.user.name,
+        email: comment.user.email,
+        image: comment.user.image,
+      }
     })),
     ratings: game.ratings.map(rating => ({
       value: rating.value,
       user: {
-        ...rating.user,
-        image: rating.user.image || 'default-avatar', // Set default avatar
+        id: rating.user.id,
+        name: rating.user.name,
+        email: rating.user.email,
+        image: rating.user.image || 'default-avatar',
       },
     })),
   } as Game;
@@ -146,10 +157,10 @@ export default async function GamePage({
           </div>
           <p className="text-lg text-muted-foreground">{game.description}</p>
           <RatingSection
-            gameId={game.id}
+            gameId={params.id}
             initialRating={averageRating}
             totalRatings={game.ratings.length}
-            userRating={userRating}
+            currentUserRating={userRating}
           />
         </div>
       </div>
@@ -159,13 +170,15 @@ export default async function GamePage({
       <div className="space-y-4">
         <h2 className="text-2xl font-bold">Comments</h2>
         <CommentSection
-          gameId={game.id}
+          gameId={params.id}
           initialComments={game.comments.map(comment => ({
-            ...comment,
+            id: comment.id,
+            content: comment.content,
+            createdAt: comment.createdAt,
             user: {
-              ...comment.user,
-              image: comment.user.image || 'default-avatar',
-            },
+              id: comment.user.id,
+              name: comment.user.name
+            }
           }))}
         />
       </div>
