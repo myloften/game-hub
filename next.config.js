@@ -1,49 +1,15 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  output: 'standalone',
-  experimental: {
-    optimizePackageImports: ['@mantine/core', '@mantine/hooks'],
-  },
+  output: 'export',
+  distDir: '.output',
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: 'https',
         hostname: '**',
       },
     ],
-  },
-  webpack: (config, { isServer }) => {
-    // 优化客户端构建
-    if (!isServer) {
-      config.optimization = {
-        ...config.optimization,
-        minimize: true,
-        splitChunks: {
-          chunks: 'all',
-          minSize: 5000,
-          maxSize: 15000,
-          minChunks: 1,
-          maxAsyncRequests: 30,
-          maxInitialRequests: 30,
-          automaticNameDelimiter: '~',
-          cacheGroups: {
-            defaultVendors: {
-              test: /[\\/]node_modules[\\/]/,
-              priority: -10,
-              reuseExistingChunk: true,
-              maxSize: 15000,
-            },
-            default: {
-              minChunks: 2,
-              priority: -20,
-              reuseExistingChunk: true,
-              maxSize: 15000,
-            },
-          },
-        },
-      };
-    }
-    return config;
   },
   typescript: {
     ignoreBuildErrors: true,
