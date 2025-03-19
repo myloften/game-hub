@@ -17,25 +17,27 @@ const nextConfig = {
     if (!isServer) {
       config.optimization = {
         ...config.optimization,
+        minimize: true,
         splitChunks: {
           chunks: 'all',
-          minSize: 10000,
-          maxSize: 20000,
+          minSize: 5000,
+          maxSize: 15000,
           minChunks: 1,
           maxAsyncRequests: 30,
           maxInitialRequests: 30,
+          automaticNameDelimiter: '~',
           cacheGroups: {
             defaultVendors: {
               test: /[\\/]node_modules[\\/]/,
               priority: -10,
               reuseExistingChunk: true,
-              maxSize: 20000,
+              maxSize: 15000,
             },
             default: {
               minChunks: 2,
               priority: -20,
               reuseExistingChunk: true,
-              maxSize: 20000,
+              maxSize: 15000,
             },
           },
         },
