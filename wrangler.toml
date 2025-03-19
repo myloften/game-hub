@@ -8,9 +8,6 @@ command = "npm install && npx prisma generate && npm run build"
 [env.production]
 DATABASE_URL = "file:./d1.db"
 NODE_ENV = "production"
-
-[[d1_databases]]
-binding = "DB"
-database_name = "game-hub-db"
-database_id = "4f423a8e-1a30-42d5-ae6a-1d051d3b22e9"
-migrations_dir = "prisma/migrations" 
+d1_databases = [
+  { binding = "DB", database_name = "game-hub-db", database_id = "4f423a8e-1a30-42d5-ae6a-1d051d3b22e9" }
+] 
