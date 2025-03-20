@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm install -D tailwindcss@3.4.1 postcss@8.4.35 autoprefixer@10.4.17 && npx prisma generate && next build",
+    "build": "npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx prisma/seed.ts",
