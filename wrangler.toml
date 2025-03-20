@@ -12,7 +12,7 @@ d1_databases = [
 bucket = ".next"
 
 [build]
-command = "npm install && npm run build"
+command = "npm install --no-package-lock && npm run build"
 output_directory = ".next"
 pages_build_output_dir = ".next"
 framework = "nextjs"
