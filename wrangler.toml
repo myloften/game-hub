@@ -12,7 +12,7 @@ d1_databases = [
 bucket = ".next"
 
 [build]
-command = "npm install -D tailwindcss@3.4.17 postcss@8.5.3 autoprefixer@10.4.21 && npm ci && npx prisma generate && npx @cloudflare/next-on-pages@1"
+command = "npm ci && npm install -D tailwindcss@3.4.17 postcss@8.5.3 autoprefixer@10.4.21 && npx prisma generate && npx next build"
 output_directory = ".next"
 pages_build_output_dir = ".next"
 framework = "nextjs"
