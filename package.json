@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "npm ci && npx prisma generate && next build",
+    "build": "npm ci && npx prisma generate && npx next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx prisma/seed.ts",

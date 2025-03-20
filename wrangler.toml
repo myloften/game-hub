@@ -12,9 +12,9 @@ d1_databases = [
 bucket = ".output"
 
 [build]
-command = "npm install --legacy-peer-deps && npx prisma generate && npm run build"
-output_directory = ".output"
-pages_build_output_dir = ".output"
+command = "npm ci && npx prisma generate && npx next build"
+output_directory = ".next"
+pages_build_output_dir = ".next"
 
 [build.upload]
 format = "service-worker"
