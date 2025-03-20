@@ -9,7 +9,7 @@ d1_databases = [
 ]
 
 [site]
-bucket = ".output"
+bucket = ".next"
 
 [build]
 command = "npm ci && npx prisma generate && npx next build"
