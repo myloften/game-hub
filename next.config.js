@@ -2,7 +2,6 @@
 const path = require('path');
 
 const nextConfig = {
-  output: 'export',
   distDir: '.next',
   images: {
     unoptimized: true,
@@ -52,56 +51,14 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@radix-ui/react-avatar', '@radix-ui/react-label', '@radix-ui/react-slot', '@radix-ui/react-tabs'],
   },
-  webpack: (config, { dev, isServer }) => {
-    // 优化模块解析 - 在所有环境下生效
+  webpack: (config) => {
     config.resolve = {
       ...config.resolve,
-      extensions: ['.js', '.jsx', '.ts', '.tsx'],
       alias: {
         ...config.resolve.alias,
         '@': path.join(__dirname, 'src'),
       },
     };
-
-    // 生产环境优化
-    if (!dev && !isServer) {
-      // 禁用缓存
-      config.cache = false;
-      
-      // 优化 chunk 大小
-      config.optimization = {
-        ...config.optimization,
-        splitChunks: {
-          chunks: 'all',
-          maxSize: 5000000, // 5MB
-          minSize: 20000,
-          maxAsyncRequests: 30,
-          maxInitialRequests: 30,
-          cacheGroups: {
-            defaultVendors: {
-              test: /[\\/]node_modules[\\/]/,
-              priority: -10,
-              reuseExistingChunk: true,
-            },
-            default: {
-              minChunks: 2,
-              priority: -20,
-              reuseExistingChunk: true,
-            },
-          },
-        },
-      };
-
-      // 禁用 source maps
-      config.devtool = false;
-      config.optimization.minimize = true;
-
-      // 禁用不必要的功能
-      config.performance = {
-        hints: false,
-      };
-    }
-
     return config;
   },
 }
