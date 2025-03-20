@@ -57,6 +57,10 @@ const nextConfig = {
         ...config.resolve.alias,
         '@': path.join(__dirname, 'src'),
       },
+      fallback: {
+        ...config.resolve.fallback,
+        bcryptjs: require.resolve('bcryptjs'),
+      },
     };
     return config;
   },
