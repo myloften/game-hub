@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+const path = require('path');
+
 const nextConfig = {
   output: 'export',
   distDir: '.next',
@@ -57,7 +59,7 @@ const nextConfig = {
       extensions: ['.js', '.jsx', '.ts', '.tsx'],
       alias: {
         ...config.resolve.alias,
-        '@': './src',
+        '@': path.join(__dirname, 'src'),
       },
     };
 
