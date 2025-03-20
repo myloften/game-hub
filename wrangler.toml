@@ -9,12 +9,7 @@ NODE_ENV = "production"
 bucket = ".next"
 
 [build]
-command = """
-npm install --legacy-peer-deps &&
-npm install bcryptjs@2.4.3 @types/bcryptjs@2.4.6 &&
-npm run build
-"""
-output_directory = ".next"
+command = "npm install && npm run build"
 pages_build_output_dir = ".next"
 framework = "nextjs"
 
@@ -35,10 +30,10 @@ exclude = [
 
 [[d1_databases]]
 binding = "DB"
-database_name = "game-hub-db"
-database_id = "4e1c3a0f-b314-4b27-8b8e-d1a08e6f63c2"
+database_name = "game-hub"
+database_id = "your-database-id"
 
 [build.environment]
 DATABASE_URL = "file:./d1.db"
 NEXTAUTH_URL = "https://game-hub.pages.dev"
-NEXTAUTH_SECRET = "your-production-secret" 
+NEXTAUTH_SECRET = "your-nextauth-secret" 

@@ -50,19 +50,20 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['@radix-ui/react-avatar', '@radix-ui/react-label', '@radix-ui/react-slot', '@radix-ui/react-tabs'],
   },
-  webpack: (config) => {
-    config.resolve = {
-      ...config.resolve,
-      alias: {
-        ...config.resolve.alias,
-        '@': path.join(__dirname, 'src'),
-      },
-      fallback: {
+  webpack: (config, { isServer }) => {
+    config.resolve.alias = {
+      ...config.resolve.alias,
+      '@': path.join(__dirname, 'src'),
+    }
+    
+    if (!isServer) {
+      config.resolve.fallback = {
         ...config.resolve.fallback,
         bcryptjs: require.resolve('bcryptjs'),
-      },
-    };
-    return config;
+      }
+    }
+    
+    return config
   },
 }
 
