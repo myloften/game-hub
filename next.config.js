@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'export',
-  distDir: '.output',
+  distDir: '.next',
   images: {
     unoptimized: true,
     remotePatterns: [
@@ -90,7 +90,7 @@ const nextConfig = {
         extensions: ['.js', '.jsx', '.ts', '.tsx'],
         alias: {
           ...config.resolve.alias,
-          '@': '.',
+          '@': './src',
         },
       };
 
