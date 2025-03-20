@@ -7,7 +7,7 @@
   },
   "scripts": {
     "dev": "next dev",
-    "build": "rm -rf node_modules && npm install --legacy-peer-deps && npm install -D tailwindcss@3.4.17 postcss@8.5.3 autoprefixer@10.4.21 && npx prisma generate && next build",
+    "build": "npm ci && npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "seed": "npx tsx prisma/seed.ts",
