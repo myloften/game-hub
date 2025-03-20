@@ -51,6 +51,16 @@ const nextConfig = {
     optimizePackageImports: ['@radix-ui/react-avatar', '@radix-ui/react-label', '@radix-ui/react-slot', '@radix-ui/react-tabs'],
   },
   webpack: (config, { dev, isServer }) => {
+    // 优化模块解析 - 在所有环境下生效
+    config.resolve = {
+      ...config.resolve,
+      extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      alias: {
+        ...config.resolve.alias,
+        '@': './src',
+      },
+    };
+
     // 生产环境优化
     if (!dev && !isServer) {
       // 禁用缓存
@@ -83,16 +93,6 @@ const nextConfig = {
       // 禁用 source maps
       config.devtool = false;
       config.optimization.minimize = true;
-
-      // 优化模块解析
-      config.resolve = {
-        ...config.resolve,
-        extensions: ['.js', '.jsx', '.ts', '.tsx'],
-        alias: {
-          ...config.resolve.alias,
-          '@': './src',
-        },
-      };
 
       // 禁用不必要的功能
       config.performance = {
