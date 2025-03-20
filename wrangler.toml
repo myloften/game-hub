@@ -12,7 +12,7 @@ d1_databases = [
 bucket = ".next"
 
 [build]
-command = "npm install && npm install -D tailwindcss postcss autoprefixer && npx prisma generate && npm run build"
+command = "npm install --legacy-peer-deps && npm install -D tailwindcss postcss autoprefixer --legacy-peer-deps && npx prisma generate && npm run build"
 output_directory = ".next"
 pages_build_output_dir = ".next"
 framework = "nextjs"
