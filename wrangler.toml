@@ -12,7 +12,8 @@ d1_databases = [
 bucket = ".output"
 
 [build]
-command = "npm run build"
+command = "npm install --legacy-peer-deps && npx prisma generate && npm run build"
+output_directory = ".output"
 pages_build_output_dir = ".output"
 
 [build.upload]
