@@ -12,7 +12,7 @@ d1_databases = [
 bucket = ".next"
 
 [build]
-command = "npm install && npm install bcryptjs@2.4.3 @types/bcryptjs@2.4.6 && npm run build"
+command = ""
 output_directory = ".next"
 pages_build_output_dir = ".next"
 framework = "nextjs"
