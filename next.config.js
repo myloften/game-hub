@@ -1,5 +1,5 @@
 /** @type {import('next').NextConfig} */
-// Trigger new deployment for Cloudflare Pages
+// Trigger new deployment for Cloudflare Pages - Update TypeScript dependencies
 const path = require('path');
 
 const nextConfig = {
