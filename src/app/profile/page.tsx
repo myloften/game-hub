@@ -1,15 +1,20 @@
-import { getServerSession } from 'next-auth';
+import { getServerAuthSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import GameList from '@/components/GameList';
 import { prisma } from '@/lib/prisma';
-import { Game } from '@prisma/client';
-import { authOptions } from '@/lib/auth';
+import { Game, Rating } from '@prisma/client';
 
 interface GameWithRatings extends Game {
   ratings: {
+    id: string;
     value: number;
+    userId: string;
+    gameId: string;
+    createdAt: Date;
+    updatedAt: Date;
   }[];
+  averageRating: number;
 }
 
 interface UserData {
@@ -55,13 +60,24 @@ async function getUserData(userId: string): Promise<UserData> {
       throw new Error('User not found');
     }
 
+    const processGame = (game: Game & { ratings: Rating[] }): GameWithRatings => {
+      const averageRating = game.ratings.length > 0
+        ? game.ratings.reduce((sum, rating) => sum + rating.value, 0) / game.ratings.length
+        : 0;
+      
+      return {
+        ...game,
+        averageRating
+      } as GameWithRatings;
+    };
+
     return {
       id: user.id,
       name: user.name,
       email: user.email,
-      favorites: user.favorites.map(f => f.game as GameWithRatings),
-      playHistory: user.playHistory.map(h => h.game as GameWithRatings),
-      ratedGames: user.ratings.map(r => r.game as GameWithRatings)
+      favorites: user.favorites.map(f => processGame(f.game as Game & { ratings: Rating[] })),
+      playHistory: user.playHistory.map(h => processGame(h.game as Game & { ratings: Rating[] })),
+      ratedGames: user.ratings.map(r => processGame(r.game as Game & { ratings: Rating[] }))
     };
   } catch (error) {
     console.error('Failed to fetch user data:', error);
@@ -70,7 +86,7 @@ async function getUserData(userId: string): Promise<UserData> {
 }
 
 export default async function ProfilePage() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
   
   if (!session?.user?.email) {
     redirect('/login');
@@ -94,24 +110,15 @@ export default async function ProfilePage() {
           </TabsList>
 
           <TabsContent value="favorites">
-            <GameList
-              games={userData.favorites}
-              emptyMessage="No favorite games yet"
-            />
+            <GameList games={userData.favorites} />
           </TabsContent>
 
           <TabsContent value="history">
-            <GameList
-              games={userData.playHistory}
-              emptyMessage="No play history yet"
-            />
+            <GameList games={userData.playHistory} />
           </TabsContent>
 
           <TabsContent value="ratings">
-            <GameList
-              games={userData.ratedGames}
-              emptyMessage="No rated games yet"
-            />
+            <GameList games={userData.ratedGames} />
           </TabsContent>
         </Tabs>
       </div>

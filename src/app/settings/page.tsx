@@ -1,13 +1,12 @@
-import { getServerSession } from 'next-auth';
+import { getServerAuthSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
-import { authOptions } from '@/lib/auth';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import ProfileForm from '@/components/settings/ProfileForm';
 import PasswordForm from '@/components/settings/PasswordForm';
 
 export default async function SettingsPage() {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
   
   if (!session?.user) {
     redirect('/login');

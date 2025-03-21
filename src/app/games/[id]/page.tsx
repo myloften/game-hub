@@ -1,8 +1,7 @@
 import { notFound } from 'next/navigation';
 import Image from 'next/image';
 import { prisma } from '@/lib/prisma';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerAuthSession } from '@/lib/auth';
 import RatingSection from '@/components/game/RatingSection';
 import FavoriteButton from '@/components/game/FavoriteButton';
 import CommentSection from '@/components/game/CommentSection';
@@ -115,7 +114,7 @@ export default async function GamePage({
 }: {
   params: { id: string };
 }) {
-  const session = await getServerSession(authOptions);
+  const session = await getServerAuthSession();
   const game = await getGame(params.id);
 
   const averageRating =

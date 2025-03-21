@@ -2,6 +2,7 @@
 const path = require('path');
 
 const nextConfig = {
+  output: 'standalone',
   distDir: '.next',
   images: {
     unoptimized: true,
@@ -64,7 +65,7 @@ const nextConfig = {
     }
     
     return config
-  },
+  }
 }
 
 module.exports = nextConfig 

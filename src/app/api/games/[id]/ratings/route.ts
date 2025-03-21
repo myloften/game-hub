@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '@/lib/auth';
+import { getServerAuthSession } from '@/lib/auth';
 import { prisma } from '@/lib/prisma';
 import { Rating } from '@prisma/client';
 
@@ -54,7 +53,7 @@ export async function POST(
   const id = await Promise.resolve(params.id);
 
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerAuthSession();
     if (!session?.user) {
       return NextResponse.json(
         { error: '请先登录' },

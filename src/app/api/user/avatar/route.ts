@@ -1,4 +1,4 @@
-import { getServerSession } from 'next-auth';
+import { getServerAuthSession } from '@/lib/auth';
 import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { authOptions } from '@/lib/auth';
@@ -7,7 +7,7 @@ import { join } from 'path';
 
 export async function POST(request: Request) {
   try {
-    const session = await getServerSession(authOptions);
+    const session = await getServerAuthSession();
     
     if (!session?.user) {
       return new NextResponse('Unauthorized', { status: 401 });
@@ -48,4 +48,9 @@ export async function POST(request: Request) {
     console.error('Avatar upload error:', error);
     return new NextResponse('Internal error', { status: 500 });
   }
+}
+
+export async function PUT(request: Request) {
+  const session = await getServerAuthSession();
+  // ... existing code ...
 } 
