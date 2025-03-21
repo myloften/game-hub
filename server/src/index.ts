@@ -1,4 +1,4 @@
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { PrismaClient } from '@prisma/client';
 import jwt from 'jsonwebtoken';
@@ -8,6 +8,17 @@ const prisma = new PrismaClient();
 const app = express();
 const port = process.env.PORT || 3000;
 
+// 扩展 Request 类型以包含 user 属性
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+      };
+    }
+  }
+}
+
 // 中间件
 app.use(cors({
   origin: process.env.FRONTEND_URL,
@@ -16,17 +27,19 @@ app.use(cors({
 app.use(express.json());
 
 // 验证 token 中间件
-const authenticateToken = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+const authenticateToken = (req: Request, res: Response, next: NextFunction): void => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1];
 
   if (!token) {
-    return res.status(401).json({ error: '未提供认证令牌' });
+    res.status(401).json({ error: '未提供认证令牌' });
+    return;
   }
 
   jwt.verify(token, process.env.JWT_SECRET || 'gh_2024_jwt_8f3a9b2c4d5e6f7a', (err: any, user: any) => {
     if (err) {
-      return res.status(403).json({ error: '无效的认证令牌' });
+      res.status(403).json({ error: '无效的认证令牌' });
+      return;
     }
     req.user = user;
     next();
@@ -34,7 +47,7 @@ const authenticateToken = (req: express.Request, res: express.Response, next: ex
 };
 
 // 游戏相关路由
-app.get('/api/games', async (req, res) => {
+app.get('/api/games', async (_req: Request, res: Response): Promise<void> => {
   try {
     const games = await prisma.game.findMany({
       include: {
@@ -47,7 +60,7 @@ app.get('/api/games', async (req, res) => {
   }
 });
 
-app.get('/api/games/:id', async (req, res) => {
+app.get('/api/games/:id', async (req: Request, res: Response): Promise<void> => {
   try {
     const game = await prisma.game.findUnique({
       where: { id: req.params.id },
@@ -56,7 +69,8 @@ app.get('/api/games/:id', async (req, res) => {
       }
     });
     if (!game) {
-      return res.status(404).json({ error: '游戏不存在' });
+      res.status(404).json({ error: '游戏不存在' });
+      return;
     }
     res.json(game);
   } catch (error) {
@@ -65,10 +79,10 @@ app.get('/api/games/:id', async (req, res) => {
 });
 
 // 评分相关路由
-app.get('/api/games/:id/ratings', async (req, res) => {
+app.get('/api/games/:id/ratings', async (_req: Request, res: Response): Promise<void> => {
   try {
     const ratings = await prisma.rating.findMany({
-      where: { gameId: req.params.id }
+      where: { gameId: _req.params.id }
     });
     res.json(ratings);
   } catch (error) {
@@ -76,33 +90,34 @@ app.get('/api/games/:id/ratings', async (req, res) => {
   }
 });
 
-app.post('/api/games/:id/ratings', authenticateToken, async (req, res) => {
+app.post('/api/games/:id/ratings', authenticateToken, async (req: Request, res: Response): Promise<void> => {
   try {
     const { value } = z.object({ value: z.number().min(1).max(5) }).parse(req.body);
     const rating = await prisma.rating.create({
       data: {
         value,
         gameId: req.params.id,
-        userId: req.user.id
+        userId: req.user!.id
       }
     });
     res.json(rating);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: '评分必须在 1-5 之间' });
+      res.status(400).json({ error: '评分必须在 1-5 之间' });
+      return;
     }
     res.status(500).json({ error: '创建评分失败' });
   }
 });
 
-app.put('/api/games/:id/ratings', authenticateToken, async (req, res) => {
+app.put('/api/games/:id/ratings', authenticateToken, async (req: Request, res: Response): Promise<void> => {
   try {
     const { value } = z.object({ value: z.number().min(1).max(5) }).parse(req.body);
     const rating = await prisma.rating.update({
       where: {
         gameId_userId: {
           gameId: req.params.id,
-          userId: req.user.id
+          userId: req.user!.id
         }
       },
       data: { value }
@@ -110,19 +125,20 @@ app.put('/api/games/:id/ratings', authenticateToken, async (req, res) => {
     res.json(rating);
   } catch (error) {
     if (error instanceof z.ZodError) {
-      return res.status(400).json({ error: '评分必须在 1-5 之间' });
+      res.status(400).json({ error: '评分必须在 1-5 之间' });
+      return;
     }
     res.status(500).json({ error: '更新评分失败' });
   }
 });
 
-app.delete('/api/games/:id/ratings', authenticateToken, async (req, res) => {
+app.delete('/api/games/:id/ratings', authenticateToken, async (req: Request, res: Response): Promise<void> => {
   try {
     await prisma.rating.delete({
       where: {
         gameId_userId: {
           gameId: req.params.id,
-          userId: req.user.id
+          userId: req.user!.id
         }
       }
     });
@@ -133,7 +149,7 @@ app.delete('/api/games/:id/ratings', authenticateToken, async (req, res) => {
 });
 
 // 排行榜路由
-app.get('/api/leaderboard', async (req, res) => {
+app.get('/api/leaderboard', async (_req: Request, res: Response): Promise<void> => {
   try {
     const games = await prisma.game.findMany({
       include: {
