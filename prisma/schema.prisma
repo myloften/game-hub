@@ -60,31 +60,30 @@ model VerificationToken {
 }
 
 model Game {
-  id           String        @id @default(cuid())
-  title        String
-  description  String
-  imageUrl     String
-  gameUrl      String
-  category     String
-  iframeWidth  Int           @default(800)
-  iframeHeight Int           @default(600)
-  createdAt    DateTime      @default(now())
-  updatedAt    DateTime      @updatedAt
-  comments     Comment[]
-  favorites    Favorite[]
-  playHistory  PlayHistory[]
-  ratings      Rating[]
+  id          String   @id @default(cuid())
+  title       String
+  description String
+  imageUrl    String
+  category    String
+  iframeUrl   String
+  iframeWidth Int      @default(800)
+  iframeHeight Int     @default(600)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  comments    Comment[]
+  favorites   Favorite[]
+  playHistory PlayHistory[]
+  ratings     Rating[]
 }
 
 model Rating {
   id        String   @id @default(cuid())
-  value     Int
-  userId    String
+  value     Float
   gameId    String
+  userId    String
+  game      Game     @relation(fields: [gameId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  game      Game     @relation(fields: [gameId], references: [id])
-  user      User     @relation(fields: [userId], references: [id])
 
   @@unique([gameId, userId])
 }
