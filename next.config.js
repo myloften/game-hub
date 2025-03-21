@@ -3,7 +3,7 @@
 const path = require('path');
 
 const nextConfig = {
-  output: 'standalone',
+  output: 'export',
   distDir: '.next',
   images: {
     unoptimized: true,
@@ -51,7 +51,7 @@ const nextConfig = {
   webpack: (config, { isServer }) => {
     config.resolve.alias = {
       ...config.resolve.alias,
-      '@': path.join(__dirname, 'src'),
+      '@': path.join(__dirname),
     }
     
     if (!isServer) {
