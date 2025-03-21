@@ -57,5 +57,8 @@
   },
   "prisma": {
     "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240320.1"
   }
 }
