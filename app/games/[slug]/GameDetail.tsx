@@ -1,12 +1,16 @@
 'use client';
 
 import { Game } from "@/lib/games-data";
+import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
 
 interface GameDetailProps {
   game: Game;
 }
 
-export default function GameDetail({ game }: GameDetailProps) {
+function GameDetailContent({ game }: GameDetailProps) {
+  const searchParams = useSearchParams();
+  
   return (
     <article className="min-h-screen bg-white dark:bg-gray-900">
       {/* Game Header Section */}
@@ -74,5 +78,13 @@ export default function GameDetail({ game }: GameDetailProps) {
         </ul>
       </section>
     </article>
+  );
+}
+
+export default function GameDetail({ game }: GameDetailProps) {
+  return (
+    <Suspense fallback={<div>Loading game details...</div>}>
+      <GameDetailContent game={game} />
+    </Suspense>
   );
 } 
