@@ -11,7 +11,7 @@ entry-point = "."
 
 [build]
 command = "npm run build"
-publish = ".next"
+publish = "out"
 framework = "nextjs"
 pages_build_output_dir = ".next"
 
@@ -39,4 +39,5 @@ database_id = "your-database-id"
 DATABASE_URL = "file:./d1.db"
 NEXTAUTH_URL = "https://game-hub.pages.dev"
 NEXTAUTH_SECRET = "your-nextauth-secret"
-NODE_VERSION = "18.18.0" 
+NODE_VERSION = "18.18.0"
+NEXT_PUBLIC_API_URL = "https://api.yourdomain.com" 
