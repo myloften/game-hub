@@ -7,13 +7,15 @@ export default async function Home() {
   const games = await getGames();
 
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <main className="container mx-auto px-4 py-8">
-        <div className="space-y-8">
+    <main className="container mx-auto px-4 py-8">
+      <div className="space-y-8">
+        <Suspense fallback={<div>Loading search...</div>}>
           <SearchBar />
+        </Suspense>
+        <Suspense fallback={<div>Loading games...</div>}>
           <GameList games={games} />
-        </div>
-      </main>
-    </Suspense>
+        </Suspense>
+      </div>
+    </main>
   );
 } 

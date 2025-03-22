@@ -1,8 +1,11 @@
 import { Game } from '@/lib/types';
 
-export async function getGames(): Promise<Game[]> {
+export async function getGames(query?: string): Promise<Game[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/games`);
+    const url = query
+      ? `${process.env.NEXT_PUBLIC_API_URL}/api/games/search?q=${encodeURIComponent(query)}`
+      : `${process.env.NEXT_PUBLIC_API_URL}/api/games`;
+    const response = await fetch(url);
     if (!response.ok) {
       throw new Error('Failed to fetch games');
     }
