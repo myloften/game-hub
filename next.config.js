@@ -3,8 +3,6 @@ const path = require('path');
 
 const nextConfig = {
   output: 'export',
-  trailingSlash: true,
-  basePath: '',
   images: {
     unoptimized: true,
     remotePatterns: [
