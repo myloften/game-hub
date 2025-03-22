@@ -2,10 +2,19 @@ export interface Game {
   id: string;
   title: string;
   description: string;
-  category: string;
   imageUrl: string;
-  ratings: Rating[];
-  averageRating: number;
+  category: string;
+  ratings: { value: number }[];
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+export interface User {
+  id: string;
+  email: string;
+  name?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface Rating {

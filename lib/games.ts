@@ -1,15 +1,12 @@
-export async function getGames() {
+import { Game } from '@/lib/types';
+
+export async function getGames(): Promise<Game[]> {
   try {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/games`, {
-      next: { revalidate: 60 }, // 缓存60秒
-    });
-    
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/games`);
     if (!response.ok) {
       throw new Error('Failed to fetch games');
     }
-
-    const games = await response.json();
-    return games;
+    return response.json();
   } catch (error) {
     console.error('Error fetching games:', error);
     return [];
