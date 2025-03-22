@@ -1,9 +1,9 @@
 import { Suspense } from 'react';
-import { getGames } from '@/lib/games';
 import SearchBar from '@/components/SearchBar';
 import GameList from '@/components/GameList';
+import { getGames } from '@/lib/games';
 
-export default async function Home() {
+export default async function HomePage() {
   const games = await getGames();
 
   return (
@@ -12,9 +12,7 @@ export default async function Home() {
         <Suspense fallback={<div>Loading search...</div>}>
           <SearchBar />
         </Suspense>
-        <Suspense fallback={<div>Loading games...</div>}>
-          <GameList games={games} />
-        </Suspense>
+        <GameList games={games} />
       </div>
     </main>
   );

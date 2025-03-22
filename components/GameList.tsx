@@ -1,40 +1,58 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { Star } from 'lucide-react';
 import { Game } from '@/lib/types';
 import GameCard from './GameCard';
+import { getGames } from '@/lib/games';
 
 interface GameWithRatings extends Game {
   ratings: { value: number }[];
 }
 
 interface GameListProps {
-  games: Game[];
+  query?: string;
+  initialGames?: Game[];
 }
 
-export default function GameList({ games }: GameListProps) {
-  const [selectedCategory, setSelectedCategory] = useState<string>('all');
-  const [imageErrors, setImageErrors] = useState<{[key: string]: boolean}>({});
+export default function GameList({ query, initialGames = [] }: GameListProps) {
+  const [games, setGames] = useState<Game[]>(initialGames);
+  const [isLoading, setIsLoading] = useState(!initialGames.length);
 
-  const categories = [
-    'Arcade',
-    'Action',
-    'Casual',
-    'Sports',
-    'Shooting',
-    'Strategy'
-  ];
+  useEffect(() => {
+    if (query !== undefined) {
+      const fetchGames = async () => {
+        try {
+          const data = await getGames(query);
+          setGames(data);
+        } catch (error) {
+          console.error('Error fetching games:', error);
+          setGames([]);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
-  const handleImageError = (gameId: string) => {
-    setImageErrors(prev => ({
-      ...prev,
-      [gameId]: true
-    }));
-  };
+      fetchGames();
+    }
+  }, [query]);
+
+  if (isLoading) {
+    return <div>Loading games...</div>;
+  }
+
+  if (!games.length) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-gray-600 dark:text-gray-400">
+          {query ? `No games found matching "${query}"` : 'No games available'}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
