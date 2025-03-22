@@ -4,7 +4,7 @@ const path = require('path');
 const nextConfig = {
   output: 'export',
   trailingSlash: true,
-  assetPrefix: './',
+  assetPrefix: '/',
   images: {
     unoptimized: true,
     remotePatterns: [
