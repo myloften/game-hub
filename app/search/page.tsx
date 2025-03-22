@@ -2,9 +2,7 @@
 
 import { Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { getGames } from '@/lib/games';
 import GameList from '@/components/GameList';
-import type { Game } from '@/lib/types';
 
 function SearchResults() {
   const searchParams = useSearchParams();
