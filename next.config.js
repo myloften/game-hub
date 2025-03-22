@@ -3,7 +3,7 @@
 const path = require('path');
 
 const nextConfig = {
-  output: 'export',
+  output: 'standalone',
   distDir: '.next',
   images: {
     unoptimized: true,
