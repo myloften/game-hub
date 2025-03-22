@@ -6,14 +6,12 @@ DATABASE_URL = "file:./d1.db"
 NODE_ENV = "production"
 
 [site]
-bucket = ".next"
+bucket = "out"
 entry-point = "."
 
 [build]
 command = "npm run build"
 publish = "out"
-framework = "nextjs"
-pages_build_output_dir = ".next"
 
 [build.upload]
 format = "service-worker"
