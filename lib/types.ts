@@ -1,13 +1,18 @@
 export interface Game {
   id: string;
-  name: string;
+  title: string;
   description: string;
-  genre: string;
-  image: string;
-  rating: number;
-  price: number;
-  releaseDate: string;
-  platform: string;
-  developer: string;
-  publisher: string;
+  category: string;
+  imageUrl: string;
+  ratings: Rating[];
+  averageRating: number;
+}
+
+export interface Rating {
+  id: string;
+  value: number;
+  userId: string;
+  gameId: string;
+  createdAt: Date;
+  updatedAt: Date;
 } 
