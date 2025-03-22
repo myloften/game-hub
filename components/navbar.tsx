@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { ModeToggle } from '@/components/mode-toggle';
+import SearchBar from '@/components/search-bar';
 
 export default function Navbar() {
   return (
@@ -28,10 +29,23 @@ export default function Navbar() {
             </div>
           </div>
 
+          <div className="flex-1 max-w-xl px-8">
+            <SearchBar />
+          </div>
+
           <div className="flex items-center gap-4">
-            <button className="px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600">
+            <Link
+              href="/auth/register"
+              className="hidden sm:inline-flex px-4 py-2 text-sm font-medium text-gray-900 dark:text-gray-100 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
+            >
+              Register
+            </Link>
+            <Link
+              href="/auth/login"
+              className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-md hover:bg-blue-700"
+            >
               Sign In
-            </button>
+            </Link>
             <ModeToggle />
           </div>
         </div>
