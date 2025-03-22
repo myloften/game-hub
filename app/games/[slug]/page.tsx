@@ -1,8 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { Suspense } from 'react';
 import { getGameById, games } from '@/lib/games-data';
-import GameDetail from './GameDetail';
 import Image from "next/image";
 import Link from "next/link";
 

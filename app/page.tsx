@@ -2,10 +2,6 @@ import { Metadata } from 'next';
 import Link from 'next/link';
 import Image from 'next/image';
 import { getAllCategories, getGamesByCategory, type GameCategory } from '@/lib/games-data';
-import { Suspense } from "react";
-import { games } from "@/lib/games-data";
-import GameList from "@/components/GameList";
-import SearchBar from "@/components/SearchBar";
 
 export const metadata: Metadata = {
   title: 'GameHub - Play Free Online Games',
@@ -16,6 +12,7 @@ export const metadata: Metadata = {
     type: 'website',
     url: 'https://game-hub.com',
   },
+  metadataBase: new URL('https://game-hub.com'),
 };
 
 export default function HomePage() {
