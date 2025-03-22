@@ -1,13 +1,24 @@
 'use client';
 
+import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import { Game } from '@/lib/types';
 import GameCard from '@/components/game-card';
 import { Button } from '@/components/ui/button';
-import { ModeToggle } from '@/components/mode-toggle';
 
 export default function Home() {
+  const [selectedCategory, setSelectedCategory] = useState<string>('all');
+
+  const categories = [
+    'Arcade',
+    'Action',
+    'Casual',
+    'Sports',
+    'Shooting',
+    'Strategy'
+  ];
+
   const { data: games, isLoading } = useQuery({
     queryKey: ['games'],
     queryFn: async () => {
@@ -16,25 +27,35 @@ export default function Home() {
     },
   });
 
+  const filteredGames = games?.filter(game => 
+    selectedCategory === 'all' || game.genre === selectedCategory
+  );
+
   return (
-    <div className="min-h-screen bg-background">
-      <header className="border-b">
-        <div className="container mx-auto px-4 py-3 flex items-center justify-between">
-          <h1 className="text-2xl font-bold">Game Hub</h1>
-          <div className="flex items-center gap-4">
-            <Button variant="outline">Sign In</Button>
-            <ModeToggle />
-          </div>
-        </div>
-      </header>
-      <main className="container mx-auto px-4 py-8">
-        <div className="flex items-center justify-between mb-8">
+    <main className="container mx-auto px-4 py-8">
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold">Games</h2>
-          <div className="flex items-center gap-4">
-            <Button variant="outline">Filter</Button>
-            <Button variant="outline">Sort</Button>
-          </div>
         </div>
+        
+        <div className="flex flex-wrap gap-2">
+          <Button
+            variant={selectedCategory === 'all' ? 'default' : 'outline'}
+            onClick={() => setSelectedCategory('all')}
+          >
+            All Games
+          </Button>
+          {categories.map(category => (
+            <Button
+              key={category}
+              variant={selectedCategory === category ? 'default' : 'outline'}
+              onClick={() => setSelectedCategory(category)}
+            >
+              {category}
+            </Button>
+          ))}
+        </div>
+
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {isLoading ? (
             <>
@@ -43,12 +64,12 @@ export default function Home() {
               <div className="animate-pulse bg-card rounded-lg aspect-[16/9]"></div>
             </>
           ) : (
-            games?.map((game) => (
+            filteredGames?.map((game) => (
               <GameCard key={game.id} game={game} />
             ))
           )}
         </div>
-      </main>
-    </div>
+      </div>
+    </main>
   );
 } 
