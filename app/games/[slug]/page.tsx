@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { games, getGameById } from '@/lib/games-data';
 
 interface GameDetailPageProps {
   params: {
@@ -7,39 +8,30 @@ interface GameDetailPageProps {
   };
 }
 
-// Example game data - in real app, this would come from your database/API
-const gameData = {
-  title: 'Pixel Adventure',
-  description: 'Embark on an epic journey through a vibrant pixel world',
-  iframeUrl: 'https://example.com/game-embed',
-  canonicalUrl: 'https://game-hub.com/games/pixel-adventure',
-  details: 'Experience the thrill of classic platforming with modern twists. Navigate through challenging levels, collect power-ups, and defeat unique enemies in this beautifully crafted pixel art world.',
-  features: [
-    'Multiple challenging levels',
-    'Beautiful pixel art graphics',
-    'Original soundtrack',
-    'Unique power-up system'
-  ]
-};
+export async function generateStaticParams() {
+  return games.map((game) => ({
+    slug: game.id,
+  }));
+}
 
 export async function generateMetadata({ params }: GameDetailPageProps): Promise<Metadata> {
+  const game = getGameById(params.slug);
+  if (!game) return { title: 'Game Not Found' };
+
   return {
-    title: `${gameData.title} - Play Online | GameHub`,
-    description: gameData.description,
+    title: `${game.title} - Play Online | GameHub`,
+    description: game.description,
     openGraph: {
-      title: gameData.title,
-      description: gameData.description,
+      title: game.title,
+      description: game.description,
       type: 'website',
-      url: gameData.canonicalUrl,
     },
-    alternates: {
-      canonical: gameData.canonicalUrl
-    }
   };
 }
 
 export default function GameDetailPage({ params }: GameDetailPageProps) {
-  if (!gameData) {
+  const game = getGameById(params.slug);
+  if (!game) {
     notFound();
   }
 
@@ -48,10 +40,10 @@ export default function GameDetailPage({ params }: GameDetailPageProps) {
       {/* Game Header Section */}
       <header className="container mx-auto px-4 py-8 md:py-12">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
-          {gameData.title}
+          {game.title}
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-300">
-          {gameData.description}
+          {game.description}
         </p>
       </header>
 
@@ -59,11 +51,11 @@ export default function GameDetailPage({ params }: GameDetailPageProps) {
       <section className="container mx-auto px-4 mb-12">
         <div className="aspect-video w-full max-w-4xl mx-auto rounded-lg overflow-hidden shadow-xl">
           <iframe 
-            src={gameData.iframeUrl}
+            src={game.iframeUrl}
             className="w-full h-full"
             allow="fullscreen; autoplay; encrypted-media"
             loading="lazy"
-            title={gameData.title}
+            title={game.title}
           />
         </div>
       </section>
@@ -75,7 +67,7 @@ export default function GameDetailPage({ params }: GameDetailPageProps) {
         </h2>
         <div className="prose prose-lg dark:prose-invert max-w-none">
           <p className="text-gray-600 dark:text-gray-300">
-            {gameData.details}
+            {game.description}
           </p>
         </div>
       </section>
@@ -86,7 +78,7 @@ export default function GameDetailPage({ params }: GameDetailPageProps) {
           Key Features
         </h2>
         <ul className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {gameData.features.map((feature, index) => (
+          {game.features.map((feature, index) => (
             <li 
               key={index}
               className="flex items-start space-x-3 text-gray-600 dark:text-gray-300"
