@@ -1,14 +1,35 @@
 'use client';
-import { Suspense } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { getGames } from '@/lib/games';
 import GameList from '@/components/GameList';
 import type { Game } from '@/lib/types';
 
-async function SearchResults() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
-  const games = await getGames(query);
+  const [games, setGames] = useState<Game[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchGames = async () => {
+      try {
+        const data = await getGames(query);
+        setGames(data);
+      } catch (error) {
+        console.error('Error fetching games:', error);
+        setGames([]);
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    fetchGames();
+  }, [query]);
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   if (!games.length) {
     return (
