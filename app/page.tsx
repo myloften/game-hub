@@ -1,22 +1,66 @@
 'use client';
 
+import { Suspense } from 'react';
 import { useState } from 'react';
 import { games, categories } from '@/lib/data';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { format } from 'date-fns';
+import Link from 'next/link';
 
-export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('');
-
+function GameGrid({ searchQuery, selectedCategory }: { searchQuery: string; selectedCategory: string }) {
   const filteredGames = games.filter(game => {
     const matchesSearch = game.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          game.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesCategory = !selectedCategory || game.category === selectedCategory;
     return matchesSearch && matchesCategory;
   });
+
+  return (
+    <>
+      {/* 游戏列表 */}
+      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {filteredGames.map(game => (
+          <Link href={game.url} target="_blank" key={game.id}>
+            <Card className="overflow-hidden h-full transition-transform hover:scale-105">
+              {game.imageUrl && (
+                <div className="aspect-[3/4] relative">
+                  <img
+                    src={game.imageUrl}
+                    alt={game.title}
+                    className="absolute inset-0 h-full w-full object-cover"
+                  />
+                </div>
+              )}
+              <CardHeader>
+                <CardTitle className="line-clamp-1">{game.title}</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="line-clamp-2 text-sm text-muted-foreground">
+                  {game.description}
+                </p>
+              </CardContent>
+              <CardFooter>
+                <Button className="w-full">开始游戏</Button>
+              </CardFooter>
+            </Card>
+          </Link>
+        ))}
+      </div>
+
+      {/* 没有结果时显示提示 */}
+      {filteredGames.length === 0 && (
+        <div className="text-center text-muted-foreground">
+          没有找到符合条件的游戏
+        </div>
+      )}
+    </>
+  );
+}
+
+export default function HomePage() {
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
 
   return (
     <main className="container mx-auto px-4 py-8">
@@ -49,41 +93,9 @@ export default function HomePage() {
           </div>
         </div>
 
-        {/* 游戏列表 */}
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {filteredGames.map(game => (
-            <Card key={game.id} className="overflow-hidden">
-              <div className="aspect-[3/4] relative">
-                <img
-                  src={game.imageUrl}
-                  alt={game.title}
-                  className="absolute inset-0 h-full w-full object-cover"
-                />
-              </div>
-              <CardHeader>
-                <CardTitle className="line-clamp-1">{game.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="line-clamp-2 text-sm text-muted-foreground">
-                  {game.description}
-                </p>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <span className="text-lg font-bold">¥{game.price}</span>
-                <span className="text-sm text-muted-foreground">
-                  {format(new Date(game.releaseDate), 'yyyy-MM-dd')}
-                </span>
-              </CardFooter>
-            </Card>
-          ))}
-        </div>
-
-        {/* 没有结果时显示提示 */}
-        {filteredGames.length === 0 && (
-          <div className="text-center text-muted-foreground">
-            没有找到符合条件的游戏
-          </div>
-        )}
+        <Suspense fallback={<div>加载中...</div>}>
+          <GameGrid searchQuery={searchQuery} selectedCategory={selectedCategory} />
+        </Suspense>
       </div>
     </main>
   );
