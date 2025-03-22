@@ -1,11 +1,16 @@
 import type { Metadata } from 'next';
+import { Inter } from 'next/font/google';
 import './globals.css';
-import { Providers } from './providers';
-import Navbar from '@/components/navbar';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'Game Hub',
-  description: 'A collection of fun games to play online',
+  title: {
+    template: '%s | GameHub',
+    default: 'GameHub - Play Free Online Games',
+  },
+  description: 'Play the best free online games instantly in your browser.',
+  metadataBase: new URL('https://game-hub.com'),
 };
 
 export default function RootLayout({
@@ -15,14 +20,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
-        <Providers>
-          <div className="min-h-screen bg-background">
-            <Navbar />
-            {children}
-          </div>
-        </Providers>
-      </body>
+      <body className={inter.className}>{children}</body>
     </html>
   );
 } 
