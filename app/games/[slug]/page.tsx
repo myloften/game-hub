@@ -51,9 +51,14 @@ export default function GameDetailPage({ params }: GameDetailPageProps) {
             />
           </div>
           <div className="p-6">
-            <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">
-              {game.title}
-            </h1>
+            <div className="flex items-center justify-between mb-4">
+              <h1 className="text-2xl font-bold text-gray-900 dark:text-white">
+                {game.title}
+              </h1>
+              <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm font-medium">
+                {game.category}
+              </span>
+            </div>
             <p className="text-gray-600 dark:text-gray-300 mb-6">
               {game.description}
             </p>
