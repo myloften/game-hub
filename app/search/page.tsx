@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react';
 import GameList from '@/components/GameList';
 import { Game } from '@/lib/types';
 
-export default function SearchPage() {
+function SearchResults() {
   const searchParams = useSearchParams();
   const query = searchParams.get('q') || '';
   const [games, setGames] = useState<Game[]>([]);
@@ -35,21 +35,27 @@ export default function SearchPage() {
   }, [query]);
 
   return (
+    <main className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-8">
+        Search Results for "{query}"
+      </h1>
+      {isLoading ? (
+        <div>Loading...</div>
+      ) : games.length > 0 ? (
+        <GameList games={games} />
+      ) : (
+        <div className="text-center text-gray-600 dark:text-gray-400">
+          No games found matching your search.
+        </div>
+      )}
+    </main>
+  );
+}
+
+export default function SearchPage() {
+  return (
     <Suspense fallback={<div>Loading...</div>}>
-      <main className="container mx-auto px-4 py-8">
-        <h1 className="text-3xl font-bold mb-8">
-          Search Results for "{query}"
-        </h1>
-        {isLoading ? (
-          <div>Loading...</div>
-        ) : games.length > 0 ? (
-          <GameList games={games} />
-        ) : (
-          <div className="text-center text-gray-600 dark:text-gray-400">
-            No games found matching your search.
-          </div>
-        )}
-      </main>
+      <SearchResults />
     </Suspense>
   );
 } 
