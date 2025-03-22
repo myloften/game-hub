@@ -7,6 +7,7 @@ export interface Game {
   thumbnailUrl: string;
   iframeUrl: string;
   features: string[];
+  url: string;
 }
 
 export type GameCategory = 'Action' | 'Puzzle' | 'Strategy' | 'Sports' | 'Racing';
@@ -16,11 +17,12 @@ export const games: Game[] = [
     id: '1',
     slug: '2048',
     title: '2048',
-    description: 'Join the numbers and get to the 2048 tile!',
+    description: 'Join the numbers and get to the 2048 tile! Swipe to move all tiles. When two tiles with the same number touch, they merge into one!',
     category: 'Puzzle',
-    thumbnailUrl: '/games/2048.png',
+    thumbnailUrl: 'https://play-lh.googleusercontent.com/g3RY-0eFdTgOsNtBjGvtLYfHFTAf_0YR1P_ykXKYzlaXAE_O6K-8kExQzOADKuKTCA=w240-h480-rw',
     iframeUrl: 'https://play2048.co/',
-    features: ['Simple to learn', 'Challenging to master', 'Addictive gameplay']
+    features: ['Simple to learn', 'Challenging to master', 'Addictive gameplay'],
+    url: 'https://play2048.co/'
   },
   {
     id: '2',
@@ -30,7 +32,8 @@ export const games: Game[] = [
     category: 'Strategy',
     thumbnailUrl: '/games/chess.png',
     iframeUrl: 'https://www.chess.com/play/online',
-    features: ['Play vs AI', 'Online multiplayer', 'Learn chess tactics']
+    features: ['Play vs AI', 'Online multiplayer', 'Learn chess tactics'],
+    url: 'https://www.chess.com/play/online'
   },
   {
     id: '3',
@@ -40,7 +43,8 @@ export const games: Game[] = [
     category: 'Action',
     thumbnailUrl: '/games/pacman.png',
     iframeUrl: 'https://pacman.live/play.html',
-    features: ['Classic arcade gameplay', 'Power pellets', 'Ghost AI']
+    features: ['Classic arcade gameplay', 'Power pellets', 'Ghost AI'],
+    url: 'https://pacman.live/play.html'
   },
   {
     id: '4',
@@ -50,7 +54,8 @@ export const games: Game[] = [
     category: 'Strategy',
     thumbnailUrl: '/games/minecraft.png',
     iframeUrl: 'https://classic.minecraft.net/',
-    features: ['Creative mode', 'Multiplayer', 'Infinite worlds']
+    features: ['Creative mode', 'Multiplayer', 'Infinite worlds'],
+    url: 'https://classic.minecraft.net/'
   },
   {
     id: '5',
@@ -60,7 +65,8 @@ export const games: Game[] = [
     category: 'Action',
     thumbnailUrl: '/games/slither.png',
     iframeUrl: 'http://slither.io/',
-    features: ['Multiplayer', 'Leaderboards', 'Custom skins']
+    features: ['Multiplayer', 'Leaderboards', 'Custom skins'],
+    url: 'http://slither.io/'
   },
   {
     id: '6',
@@ -70,7 +76,8 @@ export const games: Game[] = [
     category: 'Puzzle',
     thumbnailUrl: '/games/wordle.png',
     iframeUrl: 'https://www.nytimes.com/games/wordle/index.html',
-    features: ['Daily puzzles', 'Share results', 'Statistics']
+    features: ['Daily puzzles', 'Share results', 'Statistics'],
+    url: 'https://www.nytimes.com/games/wordle/index.html'
   },
   {
     id: '7',
@@ -80,7 +87,8 @@ export const games: Game[] = [
     category: 'Action',
     thumbnailUrl: '/games/krunker.png',
     iframeUrl: 'https://krunker.io/',
-    features: ['Multiple classes', 'Custom maps', 'Competitive modes']
+    features: ['Multiple classes', 'Custom maps', 'Competitive modes'],
+    url: 'https://krunker.io/'
   },
   {
     id: '8',
@@ -90,7 +98,8 @@ export const games: Game[] = [
     category: 'Puzzle',
     thumbnailUrl: '/games/gartic.png',
     iframeUrl: 'https://garticphone.com/',
-    features: ['Multiplayer', 'Voice chat', 'Custom rooms']
+    features: ['Multiplayer', 'Voice chat', 'Custom rooms'],
+    url: 'https://garticphone.com/'
   },
   {
     id: '9',
@@ -100,7 +109,8 @@ export const games: Game[] = [
     category: 'Action',
     thumbnailUrl: '/games/duck-hunt.png',
     iframeUrl: 'https://duckhuntjs.com/',
-    features: ['Classic gameplay', 'Multiple levels', 'High scores']
+    features: ['Classic gameplay', 'Multiple levels', 'High scores'],
+    url: 'https://duckhuntjs.com/'
   }
 ];
 
