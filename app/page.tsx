@@ -22,7 +22,7 @@ export default function Home() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <main className="container mx-auto px-4 py-8">
         <h1 className="text-4xl font-bold text-center mb-12">
-          免费在线游戏
+          Free Online Games
         </h1>
 
         {categories.map((category) => {
@@ -30,9 +30,9 @@ export default function Home() {
           return (
             <section key={category} className="mb-12">
               <h2 className="text-2xl font-bold mb-6 flex items-center">
-                <span className="mr-2">{category}</span>
+                <span className="mr-2">{category} Games</span>
                 <span className="text-sm font-normal text-gray-500">
-                  ({games.length} 款游戏)
+                  ({games.length} games)
                 </span>
               </h2>
 

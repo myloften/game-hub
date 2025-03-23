@@ -10,7 +10,7 @@ export default function GameDetail({ slug }: { slug: string }) {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      {/* 游戏标题和分类 */}
+      {/* Game Title and Category */}
       <div className="flex items-center gap-4 mb-8">
         <h1 className="text-4xl font-bold">{game.title}</h1>
         <span className="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">
@@ -18,15 +18,15 @@ export default function GameDetail({ slug }: { slug: string }) {
         </span>
       </div>
 
-      {/* 游戏描述 */}
+      {/* Game Description */}
       <p className="text-gray-600 mb-8 text-lg leading-relaxed">
         {game.description}
       </p>
 
-      {/* 游戏特点 */}
+      {/* Game Features */}
       {game.features && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">游戏特点</h2>
+          <h2 className="text-2xl font-bold mb-4">Game Features</h2>
           <ul className="grid grid-cols-2 gap-4">
             {game.features.map((feature, index) => (
               <li key={index} className="flex items-center gap-2 text-gray-700">
@@ -40,10 +40,10 @@ export default function GameDetail({ slug }: { slug: string }) {
         </div>
       )}
 
-      {/* 游戏截图 */}
+      {/* Game Screenshots */}
       {game.screenshots && (
         <div className="mb-8">
-          <h2 className="text-2xl font-bold mb-4">游戏截图</h2>
+          <h2 className="text-2xl font-bold mb-4">Screenshots</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {game.screenshots.map((screenshot, index) => (
               <div key={index} className="relative aspect-video rounded-lg overflow-hidden shadow-lg">
@@ -59,14 +59,14 @@ export default function GameDetail({ slug }: { slug: string }) {
         </div>
       )}
 
-      {/* 开始游戏按钮 */}
+      {/* Play Button */}
       <a
         href={game.url}
         target="_blank"
         rel="noopener noreferrer"
         className="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-lg transition duration-200"
       >
-        开始游戏
+        Play Now
       </a>
     </div>
   );
