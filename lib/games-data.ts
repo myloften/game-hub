@@ -1,4 +1,4 @@
-export type GameCategory = 'Arcade' | 'Action' | 'Puzzle' | 'Sports' | 'Shooting' | 'Strategy' | 'Multiplayer';
+export type GameCategory = 'Arcade' | 'Action' | 'Puzzle' | 'Horror' | 'Sports' | 'Shooting' | 'Strategy' | 'Multiplayer';
 
 export interface Game {
   id: string;
@@ -86,6 +86,60 @@ export const games: Game[] = [
     slug: "krunker",
     url: "https://krunker.io/",
     category: "Shooting"
+  },
+  {
+    id: '1',
+    title: 'Five Nights at Freddy\'s',
+    description: 'Welcome to your new summer job at Freddy Fazbear\'s Pizza, where kids and parents alike come for entertainment and food! The main attraction is Freddy Fazbear, of course; and his two friends. They are animatronic robots, programmed to please the crowds!',
+    thumbnailUrl: 'https://cdn2.steamgriddb.com/file/sgdb-cdn/grid/d1d9d12bc22b8e59b5d4c94c831f5877.png',
+    slug: 'fnaf',
+    url: 'https://www.newgrounds.com/portal/view/630920',
+    category: 'Horror'
+  },
+  {
+    id: '2',
+    title: 'Slender: The Eight Pages',
+    description: 'A first person horror game where your only goal is to collect all 8 pages while avoiding the terrifying Slender Man. The more pages you collect, the more intense your experience becomes.',
+    thumbnailUrl: 'https://cdn2.steamgriddb.com/file/sgdb-cdn/grid/6d3a1e06d6a24c95353471e81a4be44e.png',
+    slug: 'slender',
+    url: 'https://www.indiedb.com/games/slender-the-eight-pages',
+    category: 'Horror'
+  },
+  {
+    id: '3',
+    title: 'SCP: Containment Breach',
+    description: 'Based on the SCP Foundation mythos, you find yourself trapped in a facility full of dangerous anomalous entities. Your goal is to escape while avoiding the deadly SCP-173 and other creatures.',
+    thumbnailUrl: 'https://cdn2.steamgriddb.com/file/sgdb-cdn/grid/2d1b2a5ff364c44d3c24169146c0d52c.png',
+    slug: 'scp',
+    url: 'https://www.scpcbgame.com/',
+    category: 'Horror'
+  },
+  {
+    id: '4',
+    title: 'The House',
+    description: 'A point-and-click horror game where you explore a mysterious haunted house. Each room holds new terrors and puzzles to solve.',
+    thumbnailUrl: 'https://img.itch.zone/aW1nLzEyMDk5NjEucG5n/original/B5%2FDIZ.png',
+    slug: 'the-house',
+    url: 'https://armor.ag/TheHouse',
+    category: 'Horror'
+  },
+  {
+    id: '5',
+    title: 'Pac-Man',
+    description: 'Navigate through a maze, eating dots while avoiding ghosts in this classic arcade game.',
+    thumbnailUrl: 'https://cdn2.steamgriddb.com/file/sgdb-cdn/grid/c4492c7286f57a8f5f692e5f5186e5b8.png',
+    slug: 'pacman',
+    url: 'https://pacman.live',
+    category: 'Arcade'
+  },
+  {
+    id: '6',
+    title: '2048',
+    description: 'Combine matching numbers to reach the elusive 2048 tile in this addictive puzzle game.',
+    thumbnailUrl: 'https://cdn2.steamgriddb.com/file/sgdb-cdn/grid/b3e3e393c77e35a4a3f3cbd1e429b5dc.png',
+    slug: '2048',
+    url: 'https://play2048.co',
+    category: 'Puzzle'
   }
 ];
 
@@ -94,9 +148,10 @@ export function getGameById(slug: string): Game | undefined {
 }
 
 export function getGamesByCategory(category: GameCategory): Game[] {
-  return games.filter(game => game.category === category);
+  return games.filter((game) => game.category === category);
 }
 
 export function getAllCategories(): GameCategory[] {
-  return Array.from(new Set(games.map(game => game.category)));
+  const categories = new Set(games.map((game) => game.category));
+  return Array.from(categories);
 } 
